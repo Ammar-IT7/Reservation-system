@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة عمليات الخياطة - نموذج أولي</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+<div class="prototype-container">
+<!-- Login Screen Header -->
+<div id="login-header" class="login-header">
+    <h1>نظام إدارة عمليات الحجز</h1>
+</div>
+
+<!-- Regular Header (Hidden until login) -->
+<div id="app-header" class="header" style="display: none;">
+    <button class="back-button" onclick="goBack()">
+        <i class="material-icons">arrow_forward</i>
+    </button>
+    <h1 id="screen-title">الصفحة الرئيسية</h1>
+    <button class="menu-button" onclick="toggleDrawer()">
+        <i class="material-icons">menu</i>
+    </button>
+</div>
+
+<div class="drawer" id="drawer">
+    <div class="drawer-header">
+        <div class="user-avatar">
+            <i class="material-icons">person</i>
+        </div>
+        <h2 id="user-name">أحمد محمد</h2>
+        <p>مدير النظام</p>
+    </div>
+    <div class="drawer-content">
+        <div class="drawer-section">
+            <a href="#" class="drawer-item" onclick="navigateTo('view-all-users')">
+                <i class="material-icons">person</i>
+                <span>المستخدمين</span>
+            </a>
+            <a href="#" class="drawer-item" onclick="navigateTo('view-all-item-groups')">
+                <i class="material-icons">booking</i>
+                <span>أنواع الحجوزات</span>
+            </a>
+            <a href="#" class="drawer-item">
+                <i class="material-icons">help</i>
+                <span>المساعدة</span>
+            </a>
+            <a href="#" class="drawer-item" onclick="logout()">
+                <i class="material-icons">logout</i>
+                <span>تسجيل الخروج</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer()"></div>
+
+<!-- Login Screen -->
+<div class="screen active" id="login">
+    <div class="content">
+        <div style="text-align: center; margin: 30px 0;">
+            <div style="font-size: 60px; color: var(--primary-color); margin-bottom: 10px;">
+                <i class="material-icons" style="font-size: 60px;">booking</i>
+            </div>
+            <h1 style="font-size: 22px; margin-bottom: 5px;">نظام إدارة الحجوزات</h1>
+            <p style="color: var(--dark-gray);">تسجيل الدخول للنظام</p>
+        </div>
+        
+        <div class="card">
+            <div class="card-content">
+                <div class="form-group">
+                    <label class="form-label">اسم المستخدم</label>
+                    <input type="text" class="form-input" placeholder="اسم المستخدم" id="username">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">كلمة المرور</label>
+                    <input type="password" class="form-input" placeholder="كلمة المرور" id="password">
+                    <div id="login-error" class="error-message">اسم المستخدم أو كلمة المرور غير صحيحة</div>
+                </div>
+                <div class="form-group">
+                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <input type="checkbox" id="remember">
+                        <label for="remember" style="margin-right: 10px; font-size: 14px;">تذكرني</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="form-button" onclick="login()">تسجيل الدخول</button>
+                </div>
+                <div style="text-align: center; margin-top: 15px;">
+                    <a href="#" style="color: var(--primary-color); text-decoration: none; font-size: 14px;">نسيت كلمة المرور؟</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Dashboard Screen -->
+<div class="screen" id="dashboard">
+    <div class="content">
+        <div class="card">
+            <div class="card-header">
+                <h2>ملخص الإحصائيات اليومية</h2>
+            </div>
+            <div class="card-content">
+                <div class="stat-grid">
+                    <div class="stat-box">
+                        <h3>الحجوزات الجديدة</h3>
+                        <p>15</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>الحجوزات المؤكدة</h3>
+                        <p>30</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>الحجوزات الملغاة</h3>
+                        <p>5</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>الإيرادات اليومية</h3>
+                        <p>6,500 ر.س</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h2>التنبيهات العاجلة</h2>
+            </div>
+            <div class="card-content">
+                <div class="alert warning">
+                    <i class="material-icons">warning</i>
+                    <div>
+                        <strong>3 حجوزات</strong> تحتاج للتأكيد اليوم
+                    </div>
+                </div>
+                <div class="alert warning">
+                    <i class="material-icons">inventory</i>
+                    <div>
+                        <strong>2 خدمات</strong> تحتاج للتجهيز
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h2>الحجوزات الأخيرة</h2>
+            </div>
+            <div class="card-content">
+                <div class="list-item">
+                    <div>
+                        <div class="item-primary">#30045 - سارة محمد</div>
+                        <div class="item-secondary">فستان نسائي - 15 مارس</div>
+                    </div>
+                    <span class="item-status status-pending">قيد الانتظار</span>
+                </div>
+                <div class="list-item">
+                    <div>
+                        <div class="item-primary">#30044 - أحمد علي</div>
+                        <div class="item-secondary">كوشة أفراح - 14 مارس</div>
+                    </div>
+                    <span class="item-status status-confirmed">مؤكدة</span>
+                </div>
+                <div class="list-item">
+                    <div>
+                        <div class="item-primary">#30043 - ليلى عمر</div>
+                        <div class="item-secondary">خدمة دي جي - 13 مارس</div>
+                    </div>
+                    <span class="item-status status-canceled">ملغاة</span>
+                </div>
+                <div class="list-item">
+                    <div>
+                        <div class="item-primary">#30042 - نورة سعيد</div>
+                        <div class="item-secondary">قاعة أفراح - 12 مارس</div>
+                    </div>
+                    <span class="item-status status-completed">تم التسليم</span>
+                </div>
+                <div class="list-item">
+                    <div>
+                        <div class="item-primary">#30041 - فهد سلطان</div>
+                        <div class="item-secondary">فستان نسائي - 11 مارس</div>
+                    </div>
+                    <span class="item-status status-completed">تم التسليم</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h2>مخطط الحجوزات اليومية</h2>
+            </div>
+            <div class="card-content">
+                <div class="chart-container">
+                    <div class="chart-bar" style="height: 70%;">
+                        <span class="chart-value">7</span>
+                        <span class="chart-label">السبت</span>
+                    </div>
+                    <div class="chart-bar" style="height: 90%;">
+                        <span class="chart-value">9</span>
+                        <span class="chart-label">الأحد</span>
+                    </div>
+                    <div class="chart-bar" style="height: 80%;">
+                        <span class="chart-value">8</span>
+                        <span class="chart-label">الإثنين</span>
+                    </div>
+                    <div class="chart-bar" style="height: 100%;">
+                        <span class="chart-value">10</span>
+                        <span class="chart-label">الثلاثاء</span>
+                    </div>
+                    <div class="chart-bar" style="height: 110%;">
+                        <span class="chart-value">11</span>
+                        <span class="chart-label">الأربعاء</span>
+                    </div>
+                    <div class="chart-bar" style="height: 90%;">
+                        <span class="chart-value">9</span>
+                        <span class="chart-label">الخميس</span>
+                    </div>
+                    <div class="chart-bar" style="height: 60%;">
+                        <span class="chart-value">6</span>
+                        <span class="chart-label">الجمعة</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bottom Navigation -->
+<div class="bottom-nav" id="bottom-nav" style="display: none;">
+    <a href="#" class="nav-item active" onclick="navigateTo('dashboard')">
+        <i class="material-icons">dashboard</i>
+        <span>الرئيسية</span>
+    </a>
+    <a href="#" class="nav-item" onclick="navigateTo('operations')">
+        <i class="material-icons">assignment</i>
+        <span>العمليات</span>
+    </a>
+    <a href="#" class="nav-item" onclick="navigateTo('reports')">
+        <i class="material-icons">bar_chart</i>
+        <span>التقارير</span>
+    </a>
+    <a href="#" class="nav-item" onclick="navigateTo('view-all-items')">
+        <i class="material-icons">items</i>
+        <span>الأصناف</span>
+    </a>
+</div>
+
+<!-- Operations Screen -->
+<div class="screen" id="operations">
+    <div class="content">
+        <div class="tab-container">
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('invoice', this)">فاتورة الحجز</div>
+                <div class="tab" onclick="switchTab('receipt', this)">سند القبض</div>
+                <div class="tab" onclick="switchTab('payment', this)">سند الصرف</div>
+            </div>
+        </div>
+        
+        <div class="tab-content active" id="invoice">
+            <div class="card">
+                <div class="card-header">
+                    <h2>الفواتير الأخيرة</h2>
+                </div>
+                <div class="card-content">
+                    <div class="list-item">
+                        <div>
+                            <div class="item-primary">#10045 - محمد أحمد</div>
+                            <div class="item-secondary">12 مارس - 850 ر.س</div>
+                        </div>
+                        <i class="material-icons">chevron_left</i>
+                    </div>
+                    <div class="list-item">
+                        <div>
+                            <div class="item-primary">#10044 - سارة علي</div>
+                            <div class="item-secondary">11 مارس - 1200 ر.س</div>
+                        </div>
+                        <i class="material-icons">chevron_left</i>
+                    </div>
+                    <div class="list-item">
+                        <div>
+                            <div class="item-primary">#10043 - خالد عمر</div>
+                            <div class="item-secondary">10 مارس - 950 ر.س</div>
+                        </div>
+                        <i class="material-icons">chevron_left</i>
+                    </div>
+                </div>
+                <div class="fab" onclick="navigateTo('new-invoice')">
+                    <i class="material-icons">add</i>
+                    <span>إضافة</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="receipt" style="display: none;">
+            <div class="card">
+                <div class="card-header">
+                    <h2>سندات القبض الأخيرة</h2>
+                </div>
+                <div class="card-content">
+                    <div class="list-item">
+                        <div>
+                            <div class="item-primary">سند #245 - محمد أحمد</div>
+                            <div class="item-secondary">12 مارس - 400 ر.س</div>
+                        </div>
+                        <i class="material-icons">chevron_left</i>
+                    </div>
+                    <div class="list-item">
+                        <div>
+                            <div class="item-primary">سند #244 - سارة علي</div>
+                            <div class="item-secondary">11 مارس - 600 ر.س</div>
+                        </div>
+                        <i class="material-icons">chevron_left</i>
+                    </div>
+                </div>  <div class="fab" onclick="navigateTo('cashReceipt')">
+                <i class="material-icons">add</i>
+                <span>إضافة</span>
+            </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="payment" style="display: none;">
+            <div class="card">
+                <div class="card-header">
+                    <h2>سندات الصرف الأخيرة</h2>
+                </div>
+                <div class="card-content">
+                    <div class="list-item">
+                        <div>
+                            <div class="item-primary">سند #112 - مؤسسة الأقمشة</div>
+                            <div class="item-secondary">10 مارس - 2000 ر.س</div>
+                        </div>
+                        <i class="material-icons">chevron_left</i>
+                    </div>
+                    <div class="list-item">
+                        <div>
+                            <div class="item-primary">سند #111 - المدينة للخيوط</div>
+                            <div class="item-secondary">9 مارس - 1500 ر.س</div>
+                        </div>
+                        <i class="material-icons">chevron_left</i>
+                    </div>
+                </div>
+                <div class="fab" onclick="navigateTo('paymentVoucher')">
+                    <i class="material-icons">add</i>
+                    <span>إضافة</span>
+                </div>
+            </div>
+        </div>
+</div>
+</div>
+
+<!-- Reports Screen -->
+<div class="screen" id="reports">
+    <div class="content">
+        <div class="card">
+            <div class="card-header">
+                <h2>التقارير المتاحة</h2>
+            </div>
+            <div class="card-content">
+                <div class="list-item">
+                    <div class="item-primary">تقارير الحجوزات</div>
+                    <i class="material-icons">chevron_left</i>
+                </div>
+                <div class="list-item">
+                    <div class="item-primary">تقارير الأصناف</div>
+                    <i class="material-icons">chevron_left</i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confugure System Screen -->
+<div class="screen" id="system-management">
+    <div class="content">
+        <div class="card">
+            <div class="card-header">
+                <h2>إدارة النظام</h2>
+            </div>
+            <div class="card-content">
+                <div class="list-item" onclick="navigateTo('view-all-users')">
+                    <div class="item-primary">بيانات المستخدمين</div>
+                    <i class="material-icons">chevron_left</i>
+                </div>
+                <div class="list-item" onclick="navigateTo('view-all-user-groups')">
+                    <div class="item-primary">مجموعات المستخدمين</div>
+                    <i class="material-icons">chevron_left</i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <!-- View All Users Screen -->
+<div class="screen" id="view-all-users">
+    <div class="content">
+        <div class="card">
+            <div class="card-header">
+                <h2>المستخدمين</h2>
+                <div class="header-actions">
+                    <button class="add-new-btn" onclick="navigateTo('input-users')">
+                        <i class="material-icons">add</i>إضافة  
+                    </button>
+                    <div class="search-container">
+                        <input type="text" placeholder="بحث..." class="search-input">
+                        <button class="search-btn"><i class="material-icons">search</i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>رقم المستخدم</th>
+                                <th>اسم المستخدم</th>
+                                <th>الصلاحيات</th>
+                                <th>تفعيل</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>101</td>
+                                <td>أحمد محمد</td>
+                                <td>مدير</td>
+                                <td><i class="material-icons active">check_circle</i></td>
+                                <td class="action-buttons">
+                                    <button class="edit-btn" onclick="editUser(101)"><i class="material-icons">edit</i></button>
+                                    <button class="delete-btn" onclick="deleteUser(101)"><i class="material-icons">delete</i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>102</td>
+                                <td>محمد علي</td>
+                                <td>منسق</td>
+                                <td><i class="material-icons active">check_circle</i></td>
+                                <td class="action-buttons">
+                                    <button class="edit-btn" onclick="editUser(102)"><i class="material-icons">edit</i></button>
+                                    <button class="delete-btn" onclick="deleteUser(102)"><i class="material-icons">delete</i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>103</td>
+                                <td>عمر خالد</td>
+                                <td>عمليات</td>
+                                <td><i class="material-icons inactive">cancel</i></td>
+                                <td class="action-buttons">
+                                    <button class="edit-btn" onclick="editUser(103)"><i class="material-icons">edit</i></button>
+                                    <button class="delete-btn" onclick="deleteUser(103)"><i class="material-icons">delete</i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+                    <button class="pagination-btn"><i class="material-icons">keyboard_arrow_right</i></button>
+                    <button class="pagination-btn active">1</button>
+                    <button class="pagination-btn">2</button>
+                    <button class="pagination-btn">3</button>
+                    <button class="pagination-btn"><i class="material-icons">keyboard_arrow_left</i></button>
+                </div>
+                <div class="view-all-actions">
+                    <button class="back-btn" onclick="navigateTo('system-management')">العودة</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User Data Screen (بيانات المستخدمين) -->
+<div class="screen" id="input-users">
+    <div class="content">
+        <div class="card">
+            <div class="card-header">
+                <h2>بيانات المستخدم</h2>
+            </div>
+            <div class="card-content">
+                <div class="form-section">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>رقم المستخدم</label>
+                            <input type="text" placeholder="أدخل رقم دخول المستخدم إلى النظام" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>اسم المستخدم محلي</label>
+                            <input type="text" placeholder="أدخل اسم المستخدم باللغة الأساسية" />
+                        </div>
+                        <div class="form-group">
+                            <label>اسم المستخدم أجنبي</label>
+                            <input type="text" placeholder="أدخل اسم المستخدم باللغة الأجنبية" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>كلمة السر</label>
+                            <input type="password" placeholder="أدخل كلمة المرور" />
+                        </div>
+                        <div class="form-group">
+                            <label>تأكيد كلمة السر</label>
+                            <input type="password" placeholder="تأكيد كلمة المرور" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>الصلاحيات</label>
+                            <select>
+                                <option value="">اختر الصلاحيات</option>
+                                <option value="1">مدير</option>
+                                <option value="2">تنسيق</option>
+                                <option value="3">العمليات</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row checkbox-row">
+                        <div class="form-group">
+                            <input type="checkbox" id="active-user" />
+                            <label for="active-user">تفعيل</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="save-button"><i class="material-icons">save</i>حفظ</button>
+                    <button class="cancel-button" onclick="navigateTo('view-all-users')">إلغاء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- View All Item Groups Screen -->
+<div class="screen" id="view-all-item-groups">
+    <div class="content">
+        <div class="card">
+            <div class="card-header">
+                <h2>أنواع الحجوزات</h2>
+                <div class="header-actions">
+                    <button class="add-new-btn" onclick="navigateTo('input-items-groups')">
+                        <i class="material-icons">add</i>إضافة
+                    </button>
+                    <div class="search-container">
+                        <input type="text" placeholder="بحث..." class="search-input">
+                        <button class="search-btn"><i class="material-icons">search</i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>رقم النوع</th>
+                                <th>الاسم المحلي</th>
+                                <th>الاسم الأجنبي</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>4001</td>
+                                <td>فساتين نسائية</td>
+                                <td>Woman dresses</td>
+                                <td class="action-buttons">
+                                    <button class="edit-btn" onclick="editItemGroup(4001)"><i class="material-icons">edit</i></button>
+                                    <button class="delete-btn" onclick="deleteItemGroup(4001)"><i class="material-icons">delete</i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4002</td>
+                                <td>قاعة أفراح</td>
+                                <td>Wedding hall</td>
+                                <td class="action-buttons">
+                                    <button class="edit-btn" onclick="editItemGroup(4002)"><i class="material-icons">edit</i></button>
+                                    <button class="delete-btn" onclick="deleteItemGroup(4002)"><i class="material-icons">delete</i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4003</td>
+                                <td>خدمات دي جي</td>
+                                <td>DJs</td>
+                                <td class="action-buttons">
+                                    <button class="edit-btn" onclick="editItemGroup(4003)"><i class="material-icons">edit</i></button>
+                                    <button class="delete-btn" onclick="deleteItemGroup(4003)"><i class="material-icons">delete</i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+                    <button class="pagination-btn"><i class="material-icons">keyboard_arrow_right</i></button>
+                    <button class="pagination-btn active">1</button>
+                    <button class="pagination-btn">2</button>
+                    <button class="pagination-btn">3</button>
+                    <button class="pagination-btn"><i class="material-icons">keyboard_arrow_left</i></button>
+                </div>
+                <div class="view-all-actions">
+                    <button class="back-btn" onclick="navigateTo('system-inputs')">العودة</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View All Items Screen -->
+<div class="screen" id="view-all-items">
+    <div class="content">
+        <div class="card">
+            <div class="card-header">
+                <h2>الأصناف</h2>
+                <div class="header-actions">
+                    <button class="add-new-btn" onclick="navigateTo('input-items')">
+                        <i class="material-icons">add</i>إضافة
+                    </button>
+                    <div class="search-container">
+                        <input type="text" placeholder="بحث..." class="search-input">
+                        <button class="search-btn"><i class="material-icons">search</i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>رقم الصنف</th>
+                                <th>الاسم</th>
+                                <th>نوع الحجز</th>
+                                <th>السعر</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>F1001</td>
+                                <td>فستان</td>
+                                <td>فساتين نسائية</td>
+                                <td>150</td>
+                                <td>25.00</td>
+                                <td>مفعل</td>
+                                <td class="action-buttons">
+                                    <button class="edit-btn" onclick="editItem('F1001')"><i class="material-icons">edit</i></button>
+                                    <button class="delete-btn" onclick="deleteItem('F1001')"><i class="material-icons">delete</i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>T2001</td>
+                                <td>خدمات دي جي<</td>
+                                <td>1دي جي</td>
+                                <td>300</td>
+                                <td>5.75</td>
+                                <td>مفعل</td>
+                                <td class="action-buttons">
+                                    <button class="edit-btn" onclick="editItem('T2001')"><i class="material-icons">edit</i></button>
+                                    <button class="delete-btn" onclick="deleteItem('T2001')"><i class="material-icons">delete</i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>B3001</td>
+                                <td>قاعة الملكي</td>
+                                <td>قاعات أفراح</td>
+                                <td>50</td>
+                                <td>120.00</td>
+                                <td>مفعل</td>
+                                <td class="action-buttons">
+                                    <button class="edit-btn" onclick="editItem('B3001')"><i class="material-icons">edit</i></button>
+                                    <button class="delete-btn" onclick="deleteItem('B3001')"><i class="material-icons">delete</i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+                    <button class="pagination-btn"><i class="material-icons">keyboard_arrow_right</i></button>
+                    <button class="pagination-btn active">1</button>
+                    <button class="pagination-btn">2</button>
+                    <button class="pagination-btn">3</button>
+                    <button class="pagination-btn"><i class="material-icons">keyboard_arrow_left</i></button>
+                </div>
+                <div class="view-all-actions">
+                    <button class="back-btn" onclick="navigateTo('system-inputs')">العودة</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Items Groups Screen (أنواع الحجوزات الأصناف) -->
+<div class="screen" id="input-items-groups">
+    <div class="item-groups-content content">
+        <div class="item-groups-card card">
+            <div class="item-groups-card-header card-header">
+                <h2>أنواع الحجوزات</h2>
+            </div>
+            <div class="item-groups-card-content card-content">
+                <div class="item-groups-form-section form-section">
+                    <h3>بيانات الحجوزات</h3>
+                    <div class="item-groups-form-row form-row">
+                        <div class="item-groups-form-group form-group">
+                            <label>رقم الحجز</label>
+                            <input type="text" disabled placeholder="يظهر آلياً" />
+                        </div>
+                    </div>
+                    <div class="item-groups-form-row form-row">
+                        <div class="item-groups-form-group form-group">
+                            <label>الاسم محلي</label>
+                            <input type="text" placeholder="أدخل نوع الحجز باللغة الأساسية" />
+                        </div>
+                        <div class="item-groups-form-group form-group">
+                            <label>الاسم أجنبي</label>
+                            <input type="text" placeholder="أدخل  نوع الحجز باللغة الأجنبية" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-groups-form-actions form-actions">
+                    <button class="item-groups-save-button save-button"><i class="material-icons">save</i>حفظ</button>
+                    <button class="item-groups-cancel-button cancel-button" onclick="navigateTo('view-all-item-groups')">إلغاء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Items Screen (بيانات الأصناف) -->
+<div class="screen" id="input-items">
+    <div class="content">
+        <div class="card">
+            <div class="card-header">
+                <h2>بيانات الصنف</h2>
+            </div>
+            <div class="items-card-content card-content">
+                <div class="items-form-section form-section">
+                    <h3>بيانات الصنف</h3>
+                    <div class="items-form-row form-row">
+                        <div class="items-form-group form-group">
+                            <label>نوع الحجز</label>
+                            <select>
+                                <option value="">اختر نوع</option>
+                                <option value="1">فساتين نسائية</option>
+                                <option value="2">خدمات دي جي</option>
+                                <option value="3">قاعة أفراح</option>
+                                <option value="3">كوش أفراح</option>
+                            </select>
+                        </div>
+                        <div class="items-form-group form-group">
+                            <label>رقم الصنف</label>
+                            <input type="text" placeholder="أدخل رمز الصنف" />
+                        </div>
+                    </div>
+                    <div class="items-form-row form-row">
+                        <div class="items-form-group form-group">
+                            <label>الاسم محلي</label>
+                            <input type="text" placeholder="أدخل اسم الصنف باللغة الأساسية" />
+                        </div>
+                        <div class="items-form-group form-group">
+                            <label>الاسم أجنبي</label>
+                            <input type="text" placeholder="أدخل اسم الصنف باللغة الأجنبية" />
+                        </div>
+                    </div>
+                    <div class="items-form-row form-row">
+                        <div class="items-form-group form-group">
+                            <label>السعر</label>
+                            <input type="number" placeholder="أدخل السعر" />
+                        </div>
+                    </div>
+                    <div class="items-form-row form-row">
+                        <div class="items-form-group form-group checkbox-group">
+                            <input type="checkbox" id="itemActive" />
+                            <label for="itemActive">تفعيل</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="items-form-section form-section">
+                    <h3>صورة الصنف</h3>
+                    <div class="items-image-upload">
+                        <div class="items-image-preview">
+                            <img id="itemImagePreview" src="placeholder-image.jpg" alt="صورة الصنف" />
+                        </div>
+                        <button class="items-browse-button"><i class="material-icons">photo_camera</i> استعراض</button>
+                    </div>
+                </div>
+
+                <div class="items-form-actions form-actions">
+                    <button class="items-save-button save-button"><i class="material-icons">save</i>حفظ</button>
+                    <button class="items-cancel-button cancel-button" onclick="navigateTo('view-all-items')">إلغاء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- New Invoice Screen -->
+<div class="screen" id="new-invoice">
+    <div class="inv-content">
+        <div class="inv-card">
+            <div class="inv-card-header">
+                <h2>فاتورة حجز</h2>
+                <div class="inv-progress-bar">
+                    <div class="inv-step-indicator" id="inv-step-indicator"></div>
+                </div>
+                <div class="inv-step-labels">
+                    <span class="inv-step-label active" data-step="1">البيانات الرئيسية</span>
+                    <span class="inv-step-label" data-step="2">بيانات المنتج</span>
+                    <span class="inv-step-label" data-step="3">ملخص الفاتورة</span>
+                </div>
+            </div>
+
+            <div class="inv-card-content">
+                <!-- Step 1: البيانات الرئيسية -->
+                <div class="inv-step" id="inv-step-1">
+                    <div class="inv-section-header">
+                        <h3>البيانات الرئيسية</h3>
+                    </div>
+                    
+                    <div class="inv-form-row">
+                        <div class="inv-form-group">
+                            <label class="inv-form-label">رقم الفاتورة</label>
+                            <input type="text" class="inv-form-input" readonly value="10045" placeholder="يتم إنشاؤه تلقائياً">
+                        </div>
+                        <div class="inv-form-group">
+                            <label class="inv-form-label">تاريخ الفاتورة</label>
+                            <input type="text" class="inv-form-input" readonly value="12/03/2025" placeholder="التاريخ الحالي">
+                        </div>
+                    </div>
+
+                    <div class="inv-form-row">
+                        <div class="inv-form-group">
+                            <label class="inv-form-label">نوع الحجز<span class="inv-required">*</span></label>
+                            <select class="inv-form-select" id="inv-invoice-type" onchange="invToggleInvoiceType()">
+                                <option value="">اختر نوع الفاتورة...</option>
+                                <option value="womens_dresses">فساتين نسائية</option>
+                                <option value="wedding_hall">قاعة أفراح</option>
+                                <option value="dj_services">خدمات دي جي</option>
+                                <option value="wedding_kush">كوش أفراح</option>
+                            </select>
+                        </div>
+                        <div class="inv-form-group">
+                            <label class="inv-form-label">وصف الفاتورة</label>
+                            <input type="text" class="inv-form-input" id="inv-invoice-description" placeholder="وصف موجز للفاتورة">
+                        </div>
+                    </div>
+                    
+                    <div class="inv-form-row">
+                        <div class="inv-form-group">
+                            <label class="inv-form-label">العميل <span class="inv-required">*</span></label>
+                            <div class="inv-input-with-button">
+                                <select class="inv-form-select" id="inv-customer">
+                                    <option value="">اختر العميل...</option>
+                                    <option value="1">محمد أحمد الزهراني</option>
+                                    <option value="2">سارة علي المطيري</option>
+                                    <option value="3">خالد عمر العتيبي</option>
+                                    <option value="4">نورة سعيد القحطاني</option>
+                                </select>
+                                <button class="inv-icon-button" title="إضافة عميل جديد">
+                                    <i class="material-icons">add</i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="inv-form-group">
+                            <label class="inv-form-label">الجوال / الهاتف</label>
+                            <input type="tel" class="inv-form-input" id="inv-phone" placeholder="سيظهر تلقائياً" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="inv-form-row">
+                        <div class="inv-form-group">
+                            <label class="inv-form-label">طريقة الدفع</label>
+                            <select class="inv-form-select" id="inv-payment-method" onchange="invTogglePaymentFields()">
+                                <option value="cash">نقداً</option>
+                                <option value="credit">آجل</option>
+                            </select>
+                        </div>
+                        <div class="inv-form-group">
+                            <label class="inv-form-label">الصندوق</label>
+                            <select class="inv-form-select" id="inv-cashbox">
+                                <option value="1">الصندوق الرئيسي</option>
+                                <option value="2">صندوق الفرع</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="inv-form-row">
+                        <div class="inv-form-group">
+                            <label class="inv-form-label">العملة</label>
+                            <select class="inv-form-select" id="inv-currency" onchange="invUpdateExchangeRate()">
+                                <option value="sar">ريال يمني</option>
+                                <option value="usd">دولار أمريكي</option>
+                            </select>
+                        </div>
+                        <div class="inv-form-group">
+                            <label class="inv-form-label">سعر الصرف</label>
+                            <input type="number" class="inv-form-input" id="inv-exchange-rate" value="1" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: بيانات المنتج -->
+                <div class="inv-step" id="inv-step-2" style="display: none;">
+                    <div class="inv-section-header">
+                        <h3>البيانات التفصيلية</h3>
+                    </div>
+                    <!-- Women's Dresses Fields -->
+                    <div id="womens-dresses-fields" class="inv-type-fields">
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">نوع الفستان <span class="inv-required">*</span></label>
+                                <select class="inv-form-select" id="inv-dress-type">
+                                    <option value="">اختر نوع الفستان...</option>
+                                    <option value="1">فستان سهرة</option>
+                                    <option value="2">فستان زفاف</option>
+                                    <option value="3">فستان خطوبة</option>
+                                    <option value="4">فستان كاجوال</option>
+                                    <option value="5">فستان رسمي</option>
+                                </select>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">المناسبة</label>
+                                <input type="text" class="inv-form-input" id="inv-dress-occasion" placeholder="المناسبة أو الحدث">
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">نوع القماش <span class="inv-required">*</span></label>
+                                <select class="inv-form-select" id="inv-dress-fabric">
+                                    <option value="">اختر نوع القماش...</option>
+                                    <option value="1">ساتان</option>
+                                    <option value="2">شيفون</option>
+                                    <option value="3">دانتيل</option>
+                                    <option value="4">حرير</option>
+                                    <option value="5">تل</option>
+                                    <option value="6">قطن</option>
+                                    <option value="7">مخمل</option>
+                                </select>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">لون القماش <span class="inv-required">*</span></label>
+                                <div class="inv-input-with-button">
+                                    <select class="inv-form-select" id="inv-dress-color">
+                                        <option value="">اختر اللون...</option>
+                                        <option value="1">أبيض</option>
+                                        <option value="2">أسود</option>
+                                        <option value="3">أحمر</option>
+                                        <option value="4">أزرق</option>
+                                        <option value="5">ذهبي</option>
+                                        <option value="6">فضي</option>
+                                        <option value="7">وردي</option>
+                                    </select>
+                                    <button class="inv-icon-button" title="إضافة لون مخصص">
+                                        <i class="material-icons">palette</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">تطريز <span class="inv-required">*</span></label>
+                                <select class="inv-form-select" id="inv-dress-embroidery">
+                                    <option value="no">بدون تطريز</option>
+                                    <option value="yes">مع تطريز</option>
+                                </select>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">نوع التطريز</label>
+                                <select class="inv-form-select" id="inv-embroidery-type" disabled>
+                                    <option value="">اختر نوع التطريز...</option>
+                                    <option value="1">خرز</option>
+                                    <option value="2">ترتر</option>
+                                    <option value="3">شك</option>
+                                    <option value="4">كريستال</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">طول الفستان <span class="inv-required">*</span></label>
+                                <select class="inv-form-select" id="inv-dress-length">
+                                    <option value="1">قصير</option>
+                                    <option value="2">متوسط</option>
+                                    <option value="3">طويل</option>
+                                </select>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">موديل الفستان</label>
+                                <select class="inv-form-select" id="inv-dress-model">
+                                    <option value="1">A-line</option>
+                                    <option value="2">Ball Gown</option>
+                                    <option value="3">Mermaid</option>
+                                    <option value="4">Sheath</option>
+                                    <option value="5">Empire</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">السعر <span class="inv-required">*</span></label>
+                                <input type="number" class="inv-form-input" id="inv-dress-price" onchange="invCalculateDressTotal()">
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">إجمالي السعر</label>
+                                <input type="number" class="inv-form-input" id="inv-dress-total-price" readonly>
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">تاريخ القياس</label>
+                                <input type="date" class="inv-form-input" id="inv-measurement-date">
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">تاريخ التسليم <span class="inv-required">*</span></label>
+                                <input type="date" class="inv-form-input" id="inv-dress-delivery-date">
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-group">
+                            <label class="inv-form-label">ملاحظات إضافية</label>
+                            <textarea class="inv-form-input" id="inv-dress-notes" rows="2" placeholder="أي ملاحظات إضافية خاصة بالفستان"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Wedding Hall Fields -->
+                    <div id="wedding-hall-fields" class="inv-type-fields" style="display: none;">
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">اسم القاعة <span class="inv-required">*</span></label>
+                                <select class="inv-form-select" id="inv-hall-name">
+                                    <option value="">اختر القاعة...</option>
+                                    <option value="1">القاعة الملكية</option>
+                                    <option value="2">قاعة الأميرات</option>
+                                    <option value="3">قاعة الفخامة</option>
+                                    <option value="4">قاعة الأحلام</option>
+                                </select>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">تاريخ الحجز <span class="inv-required">*</span></label>
+                                <input type="date" class="inv-form-input" id="inv-hall-date">
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">وقت البداية <span class="inv-required">*</span></label>
+                                <input type="time" class="inv-form-input" id="inv-hall-start-time">
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">وقت النهاية <span class="inv-required">*</span></label>
+                                <input type="time" class="inv-form-input" id="inv-hall-end-time">
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">نوع المناسبة <span class="inv-required">*</span></label>
+                                <select class="inv-form-select" id="inv-event-type">
+                                    <option value="">اختر نوع المناسبة...</option>
+                                    <option value="wedding">زفاف</option>
+                                    <option value="engagement">خطوبة</option>
+                                    <option value="henna">حنة</option>
+                                    <option value="birthday">عيد ميلاد</option>
+                                    <option value="graduation">تخرج</option>
+                                    <option value="other">أخرى</option>
+                                </select>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">عدد الضيوف <span class="inv-required">*</span></label>
+                                <input type="number" class="inv-form-input" id="inv-guest-count" min="1" onchange="invCalculateHallTotal()">
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">السعر الأساسي <span class="inv-required">*</span></label>
+                                <input type="number" class="inv-form-input" id="inv-hall-base-price" readonly>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">خدمات إضافية</label>
+                                <div class="inv-checkbox-group">
+                                    <label class="inv-checkbox-label"><input type="checkbox" class="inv-checkbox" value="decoration" onchange="invCalculateHallTotal()"> تزيين وديكور</label>
+                                    <label class="inv-checkbox-label"><input type="checkbox" class="inv-checkbox" value="lighting" onchange="invCalculateHallTotal()"> إضاءة خاصة</label>
+                                    <label class="inv-checkbox-label"><input type="checkbox" class="inv-checkbox" value="staff" onchange="invCalculateHallTotal()"> طاقم خدمة إضافي</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">باقة الطعام</label>
+                                <select class="inv-form-select" id="inv-food-package" onchange="invCalculateHallTotal()">
+                                    <option value="none">بدون طعام</option>
+                                    <option value="basic">باقة أساسية</option>
+                                    <option value="standard">باقة متوسطة</option>
+                                    <option value="premium">باقة فاخرة</option>
+                                    <option value="custom">مخصص</option>
+                                </select>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">المشروبات</label>
+                                <select class="inv-form-select" id="inv-drinks-package" onchange="invCalculateHallTotal()">
+                                    <option value="none">بدون مشروبات</option>
+                                    <option value="basic">مشروبات أساسية</option>
+                                    <option value="premium">مشروبات فاخرة</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">تكلفة الإضافات</label>
+                                <input type="number" class="inv-form-input" id="inv-hall-extras-cost" readonly>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">إجمالي السعر</label>
+                                <input type="number" class="inv-form-input" id="inv-hall-total-price" readonly>
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-group">
+                            <label class="inv-form-label">ملاحظات خاصة بالحجز</label>
+                            <textarea class="inv-form-input" id="inv-hall-notes" rows="2" placeholder="أي متطلبات خاصة أو ملاحظات إضافية"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- DJ Services Fields -->
+                    <div id="dj-services-fields" class="inv-type-fields" style="display: none;">
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">اسم الدي جي <span class="inv-required">*</span></label>
+                                <select class="inv-form-select" id="inv-dj-name">
+                                    <option value="">اختر الدي جي...</option>
+                                    <option value="1">محمد العربي</option>
+                                    <option value="2">سامي الدخيل</option>
+                                    <option value="3">خالد المطيري</option>
+                                    <option value="4">عبدالله الشمري</option>
+                                </select>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">تاريخ الحجز <span class="inv-required">*</span></label>
+                                <input type="date" class="inv-form-input" id="inv-dj-date">
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">وقت البداية <span class="inv-required">*</span></label>
+                                <input type="time" class="inv-form-input" id="inv-dj-start-time">
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">مدة الخدمة بالساعات <span class="inv-required">*</span></label>
+                                <input type="number" class="inv-form-input" id="inv-dj-hours" min="1" max="12" value="4" onchange="invCalculateDjTotal()">
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">نوع المناسبة <span class="inv-required">*</span></label>
+                                <select class="inv-form-select" id="inv-dj-event-type">
+                                    <option value="">اختر نوع المناسبة...</option>
+                                    <option value="wedding">زفاف</option>
+                                    <option value="engagement">خطوبة</option>
+                                    <option value="birthday">عيد ميلاد</option>
+                                    <option value="corporate">حفل شركة</option>
+                                    <option value="other">أخرى</option>
+                                </select>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">الموقع <span class="inv-required">*</span></label>
+                                <input type="text" class="inv-form-input" id="inv-dj-location" placeholder="مكان إقامة الحفل">
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">نوع المعدات <span class="inv-required">*</span></label>
+                                <select class="inv-form-select" id="inv-dj-equipment" onchange="invCalculateDjTotal()">
+                                    <option value="basic">أساسية</option>
+                                    <option value="standard">متوسطة</option>
+                                    <option value="premium">متطورة</option>
+                                </select>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">نوع الموسيقى <span class="inv-required">*</span></label>
+                                <select class="inv-form-select" id="inv-dj-music-type">
+                                    <option value="arabic">عربية</option>
+                                    <option value="western">غربية</option>
+                                    <option value="mixed">مختلطة</option>
+                                    <option value="custom">مخصصة</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">خدمات إضافية</label>
+                                <div class="inv-checkbox-group">
+                                    <label class="inv-checkbox-label"><input type="checkbox" class="inv-checkbox" value="smoke" onchange="invCalculateDjTotal()"> آلة دخان</label>
+                                    <label class="inv-checkbox-label"><input type="checkbox" class="inv-checkbox" value="lighting" onchange="invCalculateDjTotal()"> إضاءة خاصة</label>
+                                    <label class="inv-checkbox-label"><input type="checkbox" class="inv-checkbox" value="confetti" onchange="invCalculateDjTotal()"> آلة كونفيتي</label>
+                                </div>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">سعر الساعة <span class="inv-required">*</span></label>
+                                <input type="number" class="inv-form-input" id="inv-dj-hourly-rate" readonly>
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">تكلفة الإضافات</label>
+                                <input type="number" class="inv-form-input" id="inv-dj-extras-cost" readonly>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">إجمالي السعر</label>
+                                <input type="number" class="inv-form-input" id="inv-dj-total-price" readonly>
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-group">
+                            <label class="inv-form-label">طلبات خاصة</label>
+                            <textarea class="inv-form-input" id="inv-dj-requests" rows="2" placeholder="أغاني معينة أو طلبات خاصة"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Wedding Kush Fields -->
+                    <div id="wedding-kush-fields" class="inv-type-fields" style="display: none;">
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">نوع الكوش <span class="inv-required">*</span></label>
+                                <select class="inv-form-select" id="inv-kush-type" onchange="invCalculateKushTotal()">
+                                    <option value="">اختر نوع الكوش...</option>
+                                    <option value="classic">كلاسيكي</option>
+                                    <option value="modern">عصري</option>
+                                    <option value="floral">زهور طبيعية</option>
+                                    <option value="crystal">كريستال</option>
+                                    <option value="custom">تصميم خاص</option>
+                                </select>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">تاريخ المناسبة <span class="inv-required">*</span></label>
+                                <input type="date" class="inv-form-input" id="inv-kush-date">
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">الموقع <span class="inv-required">*</span></label>
+                                <input type="text" class="inv-form-input" id="inv-kush-location" placeholder="مكان إقامة المناسبة">
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">اللون الأساسي <span class="inv-required">*</span></label>
+                                <select class="inv-form-select" id="inv-kush-color">
+                                    <option value="white">أبيض</option>
+                                    <option value="gold">ذهبي</option>
+                                    <option value="silver">فضي</option>
+                                    <option value="pink">وردي</option>
+                                    <option value="blue">أزرق</option>
+                                    <option value="purple">بنفسجي</option>
+                                    <option value="red">أحمر</option>
+                                    <option value="custom">لون مخصص</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">الحجم <span class="inv-required">*</span></label>
+                                <select class="inv-form-select" id="inv-kush-size" onchange="invCalculateKushTotal()">
+                                    <option value="small">صغير</option>
+                                    <option value="medium">متوسط</option>
+                                    <option value="large">كبير</option>
+                                    <option value="custom">حسب الطلب</option>
+                                </select>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">نوع المناسبة <span class="inv-required">*</span></label>
+                                <select class="inv-form-select" id="inv-kush-event-type">
+                                    <option value="wedding">زفاف</option>
+                                    <option value="engagement">خطوبة</option>
+                                    <option value="graduation">تخرج</option>
+                                    <option value="henna">حنة</option>
+                                    <option value="other">أخرى</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">إضافات للكوش</label>
+                                <div class="inv-checkbox-group">
+                                    <label class="inv-checkbox-label"><input type="checkbox" class="inv-checkbox" value="lighting" onchange="invCalculateKushTotal()"> إضاءة خاصة</label>
+                                    <label class="inv-checkbox-label"><input type="checkbox" class="inv-checkbox" value="names" onchange="invCalculateKushTotal()"> أسماء العروسين</label>
+                                    <label class="inv-checkbox-label"><input type="checkbox" class="inv-checkbox" value="carpet" onchange="invCalculateKushTotal()"> سجادة فاخرة</label>
+                                    <label class="inv-checkbox-label"><input type="checkbox" class="inv-checkbox" value="seating" onchange="invCalculateKushTotal()"> كراسي العروسين</label>
+                                </div>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">كتابة نص مخصص</label>
+                                <input type="text" class="inv-form-input" id="inv-kush-text" placeholder="مثال: محمد وسارة">
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">السعر الأساسي <span class="inv-required">*</span></label>
+                                <input type="number" class="inv-form-input" id="inv-kush-base-price" readonly>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">تكلفة الإضافات</label>
+                                <input type="number" class="inv-form-input" id="inv-kush-extras-cost" readonly>
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">إجمالي السعر</label>
+                                <input type="number" class="inv-form-input" id="inv-kush-total-price" readonly>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">وقت التركيب</label>
+                                <input type="time" class="inv-form-input" id="inv-kush-setup-time">
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-group">
+                            <label class="inv-form-label">ملاحظات خاصة</label>
+                            <textarea class="inv-form-input" id="inv-kush-notes" rows="2" placeholder="أي متطلبات خاصة أو ملاحظات إضافية"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: ملخص الفاتورة -->
+                <div class="inv-step" id="inv-step-3" style="display: none;">
+                    <div class="inv-section-header">
+                        <h3>ملخص الفاتورة</h3>
+                    </div>
+                    
+                    <div class="inv-invoice-summary">
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">إجمالي الفاتورة</label>
+                                <input type="number" class="inv-form-input" id="inv-invoice-total" readonly>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">التخفيض</label>
+                                <input type="number" class="inv-form-input" id="inv-discount" value="0" min="0" onchange="invCalculateTotal()">
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">الإجمالي بعد التخفيض</label>
+                                <input type="number" class="inv-form-input" id="inv-total-after-discount" readonly>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">إجمالي الضريبة</label>
+                                <input type="number" class="inv-form-input" id="inv-tax-total" readonly>
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">الإجمالي الكلي</label>
+                                <input type="number" class="inv-form-input" id="inv-grand-total" readonly>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">المبلغ المدفوع</label>
+                                <input type="number" class="inv-form-input" id="inv-paid-amount" value="0" min="0" onchange="invCalculateRemaining()">
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-row">
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">المبلغ المتبقي</label>
+                                <input type="number" class="inv-form-input" id="inv-remaining-amount" readonly>
+                            </div>
+                            <div class="inv-form-group">
+                                <label class="inv-form-label">تاريخ التسليم</label>
+                                <input type="date" class="inv-form-input" id="inv-delivery-date">
+                            </div>
+                        </div>
+                        
+                        <div class="inv-form-group">
+                            <label class="inv-form-label">البيان</label>
+                            <textarea class="inv-form-input" id="inv-invoice-note" rows="2" placeholder="ملاحظات عامة للفاتورة"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step Navigation Controls -->
+                <div class="inv-step-controls">
+                    <button class="inv-form-button inv-secondary" id="inv-prev-btn" onclick="invPrevStep()" disabled>السابق</button>
+                    <button class="inv-form-button inv-primary" id="inv-next-btn" onclick="invNextStep()">التالي</button>
+                    <button class="inv-form-button inv-success" id="inv-save-btn" onclick="invSaveInvoice()" style="display: none;">طباعة</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cash Receipt Screen (سند القبض) -->
+<div class="screen" id="cashReceipt">
+    <div class="content">
+        <div class="card">
+            <div class="card-header">
+                <h2>سند القبض</h2>
+            </div>
+            <div class="card-content">
+                <div class="form-section">
+                    <h3>البيانات الرئيسية</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>رقم المستند</label>
+                            <input type="text" disabled placeholder="يظهر آلياً" />
+                        </div>
+                        <div class="form-group">
+                            <label>تاريخ المستند</label>
+                            <input type="date" disabled />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>سعر التحويل</label>
+                            <input type="number" value="1" disabled />
+                        </div>
+                        <div class="form-group">
+                            <label>المبلغ بعملة الدفع</label>
+                            <input type="number" placeholder="أدخل المبلغ" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>المبلغ بالعملة المحلية</label>
+                            <input type="number" disabled />
+                        </div>
+                        <div class="form-group">
+                            <label>رقم المرجع</label>
+                            <input type="text" placeholder="أدخل الرقم المرجعي" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label>البيان</label>
+                            <textarea placeholder="أدخل البيان الخاص بالسند"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>البيانات التفصيلية</h3>
+                    <div class="detail-table">
+                        <div class="table-header">
+                            <div class="th">المستفيد</div>
+                            <div class="th">العملة</div>
+                            <div class="th">المبلغ بعملة الدفع</div>
+                            <div class="th">المبلغ بالعملة المحلية</div>
+                            <div class="th">البيان</div>
+                            <div class="th">حذف</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="td">
+                                <div class="input-with-icon">
+                                    <input type="text" placeholder="اختر المستفيد" />
+                                    <i class="material-icons">search</i>
+                                </div>
+                            </div>
+                            <div class="td">
+                                <select disabled>
+                                    <option>ريال سعودي</option>
+                                </select>
+                            </div>
+                            <div class="td">
+                                <input type="number" placeholder="المبلغ" />
+                            </div>
+                            <div class="td">
+                                <input type="number" disabled />
+                            </div>
+                            <div class="td">
+                                <input type="text" placeholder="البيان" />
+                            </div>
+                            <div class="td">
+                                <button class="delete-button"><i class="material-icons">delete</i></button>
+                            </div>
+                        </div>
+                        <div class="table-row">
+                            <div class="td" colspan="6">
+                                <button class="add-row-button"><i class="material-icons">add</i> إضافة مستفيد</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="save-button"><i class="material-icons">print</i>طباعة</button>
+                    <button class="cancel-button">إلغاء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Payment Voucher Screen (سند الصرف) -->
+<div class="screen" id="paymentVoucher">
+    <div class="content">
+        <div class="card">
+            <div class="card-header">
+                <h2>سند الصرف</h2>
+            </div>
+            <div class="card-content">
+                <div class="form-section">
+                    <h3>البيانات الرئيسية</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>رقم المستند</label>
+                            <input type="text" disabled placeholder="يظهر آلياً" />
+                        </div>
+                        <div class="form-group">
+                            <label>تاريخ المستند</label>
+                            <input type="date" disabled />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>سعر التحويل</label>
+                            <input type="number" value="1" disabled />
+                        </div>
+                        <div class="form-group">
+                            <label>المبلغ بعملة الدفع</label>
+                            <input type="number" placeholder="أدخل المبلغ" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>المبلغ بالعملة المحلية</label>
+                            <input type="number" disabled />
+                        </div>
+                        <div class="form-group">
+                            <label>رقم المرجع</label>
+                            <input type="text" placeholder="أدخل الرقم المرجعي" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label>البيان</label>
+                            <textarea placeholder="أدخل البيان الخاص بالسند"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="employeePayment" />
+                                <label for="employeePayment">صرف موظفين</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="vatPayment" />
+                                <label for="vatPayment">صرف ضريبة القيمة المضافة</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>البيانات التفصيلية</h3>
+                    <div class="detail-table">
+                        <div class="table-header">
+                            <div class="th">المستفيد</div>
+                            <div class="th">العملة</div>
+                            <div class="th">المبلغ بعملة الدفع</div>
+                            <div class="th">المبلغ بالعملة المحلية</div>
+                            <div class="th">البيان</div>
+                            <div class="th">حذف</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="td">
+                                <div class="input-with-icon">
+                                    <input type="text" placeholder="اختر المستفيد" />
+                                    <i class="material-icons">search</i>
+                                </div>
+                            </div>
+                            <div class="td">
+                                <select disabled>
+                                    <option>ريال سعودي</option>
+                                </select>
+                            </div>
+                            <div class="td">
+                                <input type="number" placeholder="المبلغ" />
+                            </div>
+                            <div class="td">
+                                <input type="number" disabled />
+                            </div>
+                            <div class="td">
+                                <input type="text" placeholder="البيان" />
+                            </div>
+                            <div class="td">
+                                <button class="delete-button"><i class="material-icons">delete</i></button>
+                            </div>
+                        </div>
+                        <div class="table-row">
+                            <div class="td" colspan="6">
+                                <button class="add-row-button"><i class="material-icons">add</i> إضافة مستفيد</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="save-button"><i class="material-icons">print</i>طباعة</button>
+                    <button class="cancel-button">إلغاء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        
+        <div class="bottom-nav">
+            <a href="#" class="nav-item active" onclick="navigateTo('dashboard')">
+                <i class="material-icons">dashboard</i>
+                <span>الرئيسية</span>
+            </a>
+            <a href="#" class="nav-item" onclick="navigateTo('operations')">
+                <i class="material-icons">assignment</i>
+                <span>العمليات</span>
+            </a>
+            <a href="#" class="nav-item" onclick="navigateTo('reports')">
+                <i class="material-icons">bar_chart</i>
+                <span>التقارير</span>
+            </a>
+            <a href="#" class="nav-item" onclick="navigateTo('view-all-items')">
+                <i class="material-icons">category</i>
+                <span>الأصناف</span>
+            </a>
+        </div>
+        
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
