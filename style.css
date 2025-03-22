@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap');
 :root {
-    --primary-color: #1976D2;     /* Calming blue - primary brand color */
-    --secondary-color: #FF6D00;   /* Orange - for CTAs and highlights */
-    --accent-color: #00BFA5;      /* Teal - for success states */
-    --success-color: #4CAF50;     /* Green - remains for success messages */
-    --warning-color: #FFC107;     /* Amber - softer warning color */
-    --danger-color: #F44336;      /* Red - for errors and critical actions */
+    --primary-color: #572e3e;     /* Deep blue - calm and professional */
+    --secondary-color: #FF8C42;   /* Warm orange - for CTAs and highlights */
+    --accent-color: #5C946E;      /* Sage green - for available status */
+    --success-color: #4CAF50;     /* Green - for confirmed reservations */
+    --warning-color: #FFB74D;     /* Soft amber - for pending reservations */
+    --danger-color: #E57373;      /* Softer red - for cancellations and errors */
     --light-gray: #F5F7FA;        /* Lighter background shade */
     --dark-gray: #455A64;         /* Darker text color */
     --white: #FFFFFF;
@@ -17,13 +17,13 @@
     --font-primary: 'Cairo', sans-serif;
     --font-secondary: 'Almarai', sans-serif;
 }
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     font-family: var(--font-primary);
 }
-
 
 body {
     background-color: #f0f0f0;
@@ -206,16 +206,17 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 16px;
     overflow: hidden;
+    border-left: 3px solid var(--primary-color);
 }
 
-    .card-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-flex-wrap: wrap;
-padding: 15px 20px;
-background-color: #f8f9fa;
-border-bottom: 1px solid #ddd;
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #eee;
 }
 
 .card-header h2 {
@@ -231,7 +232,7 @@ border-bottom: 1px solid #ddd;
 
 .stat-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px;
 }
 
@@ -266,6 +267,12 @@ border-bottom: 1px solid #ddd;
     background-color: #fff8e1;
     border: 1px solid #ffecb3;
     color: var(--warning-color);
+}
+
+.alert.available {
+    background-color: #e8f5e9;
+    border: 1px solid #c8e6c9;
+    color: var(--accent-color);
 }
 
 .alert i {
@@ -306,14 +313,24 @@ border-bottom: 1px solid #ddd;
     color: var(--warning-color);
 }
 
-.status-progress {
-    background-color: #e3f2fd;
+.status-confirmed {
+    background-color: #e8f5e9;
+    color: var(--success-color);
+}
+
+.status-canceled {
+    background-color: #ffebee;
+    color: var(--danger-color);
+}
+
+.status-available {
+    background-color: #e8f5e9;
     color: var(--accent-color);
 }
 
-.status-completed {
-    background-color: #e8f5e9;
-    color: var(--success-color);
+.status-booked {
+    background-color: #e3f2fd;
+    color: var(--primary-color);
 }
 
 .fab {
@@ -338,10 +355,12 @@ border-bottom: 1px solid #ddd;
 .fab:hover {
     transform: scale(1.05);
 }
-.fab span{
+
+.fab span {
     font-size: 10px;
     font-weight: 500;
 }
+
 .tab-container {
     margin-bottom: 16px;
 }
@@ -425,6 +444,10 @@ border-bottom: 1px solid #ddd;
     color: var(--dark-gray);
 }
 
+.form-button.cta {
+    background-color: var(--secondary-color);
+}
+
 .stepper {
     display: flex;
     justify-content: space-between;
@@ -487,6 +510,83 @@ border-bottom: 1px solid #ddd;
     font-weight: 500;
 }
 
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.calendar-header {
+    text-align: center;
+    font-weight: 500;
+    padding: 8px 0;
+    color: var(--dark-gray);
+    font-size: 12px;
+}
+
+.calendar-day {
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.calendar-day.available {
+    background-color: #e8f5e9;
+    color: var(--accent-color);
+}
+
+.calendar-day.booked {
+    background-color: #ffebee;
+    color: var(--danger-color);
+}
+
+.calendar-day.selected {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.calendar-day.other-month {
+    color: #ccc;
+}
+
+.time-slots {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.time-slot {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.time-slot.available {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.time-slot.booked {
+    background-color: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+}
+
+.time-slot.selected {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-color: var(--primary-color);
+}
+
 .chart-container {
     width: 100%;
     height: 200px;
@@ -521,6 +621,42 @@ border-bottom: 1px solid #ddd;
     text-align: center;
     font-size: 10px;
     color: var(--dark-gray);
+}
+
+.reservation-details {
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.detail-label {
+    color: var(--dark-gray);
+    font-weight: 500;
+}
+
+.detail-value {
+    font-weight: 600;
+    color: var(--black);
+}
+
+.confirmation-code {
+    background-color: var(--primary-color);
+    color: var(--white);
+    text-align: center;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 2px;
 }
 
 .screen {
@@ -579,7 +715,6 @@ border-bottom: 1px solid #ddd;
     font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
 }
-
 
 /* New Invoice Styles */
 .inv-content {
