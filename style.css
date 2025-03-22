@@ -840,7 +840,7 @@ transition: border-color 0.15s ease-in-out;
 
 .inv-form-input:focus,
 .inv-form-select:focus {
-border-color: #80bdff;
+border-color: var(--primary-color);
 outline: 0;
 box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
@@ -984,12 +984,12 @@ gap: 6px;
 }
 
 .inv-form-button.inv-primary {
-background-color: #007bff;
+background-color: var(--primary-color);
 color: white;
 }
 
 .inv-form-button.inv-primary:hover {
-background-color: #0069d9;
+background-color:var(--primary-color)
 }
 
 .inv-form-button.inv-secondary {
@@ -1025,7 +1025,7 @@ margin-bottom: 25px;
 
 .form-section h3 {
 font-size: 16px;
-color: #3f51b5;
+color: var(--primary-color);
 margin-bottom: 15px;
 padding-bottom: 5px;
 border-bottom: 1px solid #e0e0e0;
@@ -1071,7 +1071,7 @@ transition: border-color 0.3s;
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-border-color: #3f51b5;
+border-color: var(--primary-color);
 outline: none;
 }
 
@@ -1119,13 +1119,13 @@ align-items: center;
 }
 
 .save-button {
-background-color: #3f51b5;
+background-color: var(--primary-color);
 color: white;
 border: none;
 }
 
 .save-button:hover {
-background-color: #303f9f;
+background-color: var(--primary-color);
 }
 
 .cancel-button {
@@ -1153,8 +1153,8 @@ background-color: rgba(244, 67, 54, 0.1);
 
 .add-row-button {
 background-color: transparent;
-color: #3f51b5;
-border: 1px dashed #3f51b5;
+color: var(--primary-color);
+border: 1px dashed var(--primary-color);
 padding: 8px 15px;
 border-radius: 4px;
 cursor: pointer;
@@ -1365,7 +1365,7 @@ direction: rtl;
 }
 
 .search-btn {
-background-color: #2196F3;
+background-color: var(--primary-color);
 color: white;
 border: none;
 border-radius: 0 4px 4px 0;
@@ -1457,9 +1457,9 @@ justify-content: center;
 }
 
 .pagination-btn.active {
-background-color: #2196F3;
+background-color: var(--primary-color);
 color: white;
-border-color: #2196F3;
+border-color: var(--primary-color);
 }
 
 .pagination-btn:hover:not(.active) {
