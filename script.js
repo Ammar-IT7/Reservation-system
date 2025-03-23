@@ -130,7 +130,7 @@
                 titleElement.textContent = 'إضافة مورد جديد';
                 break;
             default:
-                titleElement.textContent = 'نظام إدارة عمليات الخياطة';
+                titleElement.textContent = 'نظام إدارة عمليات الحجز';
         }
     }
     
@@ -726,7 +726,7 @@ function invAddItem() {
         
         newRow.innerHTML = `
             <td>${rowCount}</td>
-            <td>خياطة رجالية</td>
+            <td>حجز رجالية</td>
             <td>قماش ياباني</td>
             <td>200</td>
             <td>400</td>
